@@ -10,6 +10,18 @@ rare_card = 0
 epic_card = 0
 legendary_card = 0
 cards = common_card + uncommon_card + rare_card + epic_card + legendary_card
+common_list = ["Milk", "Snow and coke", "HANGRY", "Chocolate", "GRRRR", "Restroom"]
+uncommon_list = ["Drag Queen", "Hello Kitty", "Cootie Patootie", "Delulu", "Pivot"]
+rare_list = ["Smelly Cat", "Lobster", "Horny Horse", "Spermcell", "Break", "BAZZINGA"]
+epic_list = ["Train", "Harcore Sex", "Not Cool"]
+legendary_list = ["Penis Sucker", "They see me rolin", "Vibrator"]
+
+#dicks
+common_list_album = {}
+uncommon_list_album = {}
+rare_list_album = {}
+epic_list_album = {}
+legendary_list_album = {}
 
 def clr():
     os.system("clear")
@@ -52,7 +64,13 @@ def rules():
     
 def end():
     SystemExit    
-    
+
+def add_to_album(album_dict, card_name):
+    if card_name in album_dict:
+        album_dict[card_name] += 1
+    else:
+        album_dict[card_name] = 1
+
 def open_pack():
     global packs, cards, common_card, uncommon_card, rare_card, epic_card, legendary_card
     rnd_op = 0
@@ -60,23 +78,33 @@ def open_pack():
         card_rarity = random.randint(1,100)
         if card_rarity in range(1,40):
             common_card += 1
-            print("You got a common card!")
+            card_name = random.choice(common_list)
+            print(f"You got the common card {card_name}")
+            add_to_album(common_list_album, card_name)
             input(">  ")
-        elif card_rarity in range(41,70):
+        elif card_rarity in range(40,70):
             uncommon_card += 1
-            ("You got an uncommon card!")
+            card_name = random.choice(uncommon_list)
+            print(Fore.GREEN + f"You got the uncommon card {card_name}" + Fore.WHITE)
+            add_to_album(uncommon_list_album, card_name)
             input(">  ")
-        elif card_rarity in range(71,89):
+        elif card_rarity in range(70,89):
             rare_card += 1
-            ("You got a rare card!")
+            card_name = random.choice(rare_list)
+            print(Fore.BLUE + f"You got the rare card {card_name}" + Fore.WHITE)
+            add_to_album(rare_list_album, card_name)
             input(">  ")
-        elif card_rarity in range(90,96):
+        elif card_rarity in range(89,96):
             epic_card += 1
-            ("You got an epic card!")
+            card_name = random.choice(epic_list)
+            print(Fore.MAGENTA + f"You got the epic card {card_name}" + Fore.WHITE)
+            add_to_album(epic_list_album, card_name)
             input(">  ")
-        elif card_rarity in range(97,100):
+        elif card_rarity in range(96,101):
             legendary_card += 1
-            ("You got a LEGENDARY card!")
+            card_name = random.choice(legendary_list)
+            print(Fore.YELLOW + f"You got the legendary card {card_name}" + Fore.WHITE)
+            add_to_album(legendary_list_album, card_name)
             input(">  ")
         else:
             print("how did you do that")
@@ -87,12 +115,58 @@ def open_pack():
     input("")
     game()
 
+def display_album(album_dict, rarity_name):
+    if any(album_dict.values()):
+        print(f"\n--- {rarity_name} Cards ---")
+        for card_name, count in album_dict.items():
+            if count > 0:
+                print(f"{card_name}: {count}")
+    else:
+        print(f"No {rarity_name} cards yet.")
+
 def album():
-    global cards, packs
+    clr()
+    global cards, packs, common_card, uncommon_card, rare_card, epic_card, legendary_card
+    cards = common_card + uncommon_card + rare_card + epic_card + legendary_card
     print(f"Total cards: {cards}")
+    print(f"Total common cards: {common_card}")
+    print(Fore.GREEN +f"Total uncommon cards: {uncommon_card}")
+    print(Fore.CYAN +f"Total rare cards: {rare_card}")
+    print(Fore.MAGENTA +f"Total epic cards: {epic_card}")
+    print(Fore.YELLOW + f"Total legendary cards: {legendary_card}" + Fore.WHITE)
+    print("Leave")
+    
+    print(f"\n1. Common Cards\n{Fore.GREEN}2. Uncommon Cards\n{Fore.CYAN}3. Rare Cards\n{Fore.MAGENTA}4. Epic Cards\n{Fore.YELLOW}5. Legendary Cards\n{Fore.WHITE}6. Leave")
     
     album_select = input("")
     if album_select == "leave":
+        game()
+    elif album_select in ("1","common"):
+        clr()
+        display_album(common_list_album, "Common")
+        input(">  ")
+        album()
+    elif album_select in ("2","uncommon"):
+        clr()
+        display_album(uncommon_list_album, "Uncommon")
+        input(">  ")
+        album()
+    elif album_select in ("3","rare"):
+        clr()
+        display_album(rare_list_album, "Rare")
+        input(">  ")
+        album()
+    elif album_select in ("4","epic"):
+        clr()
+        display_album(epic_list_album, "Epic")
+        input(">  ")
+        album()
+    elif album_select in ("5","legendary"):
+        clr()
+        display_album(legendary_list_album, "Legendary")
+        input(">  ")
+        album()
+    elif album_select in ("6","leave"):
         game()
     else:
         clr()
@@ -100,7 +174,7 @@ def album():
         input("")
         clr()
         album()
-        
+
 def buy_pack():
     global packs, money
     clr()
@@ -112,6 +186,8 @@ def buy_pack():
 
 def game():
     global name, packs, money, cards
+    cards = common_card + uncommon_card + rare_card + epic_card + legendary_card
+
     clr()
     print("*------------------------*")
     print(name)
@@ -142,6 +218,5 @@ def game():
         input("")
         clr()
         game()
-    
-    
+        
 start()
