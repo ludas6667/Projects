@@ -1,0 +1,147 @@
+import random, os
+from colorama import Fore
+
+name = ""
+packs = 10
+money = 100
+common_card = 0
+uncommon_card = 0
+rare_card = 0
+epic_card = 0
+legendary_card = 0
+cards = common_card + uncommon_card + rare_card + epic_card + legendary_card
+
+def clr():
+    os.system("clear")
+
+def start():
+    clr()
+    print("*-----------*")
+    print("*  -Start-  *")
+    print("*  -Rules-  *")
+    print("*  -Leave-  *")
+    print("*-----------*")
+    
+    start_select = input("").lower()
+    
+    if start_select == "rules" or start_select == "2":
+        clr()
+        rules()
+        input()
+        clr()
+        start()
+    elif start_select == "leave" or start_select == "3":
+        end()
+    elif start_select == "start" or start_select == "1":
+        clr()
+        print(f"Welcome!!! Lets Begin\nWhat is your name?")
+        global name
+        name = input("")
+        clr()
+        print(f"Well hello {name}!")
+        print("Lets start you pack opening journey!!")
+        game()
+    else:
+        print("No valid option selected")
+        input("")
+        clr()
+        start()
+    
+def rules():
+    print(f"Your goal in this game is to\nopen packs and get valuable\ncards. The better cards you\nget the more they are worth.\nHave fun")
+    
+def end():
+    SystemExit    
+    
+def open_pack():
+    global packs, cards, common_card, uncommon_card, rare_card, epic_card, legendary_card
+    rnd_op = 0
+    while rnd_op <= 9:
+        card_rarity = random.randint(1,100)
+        if card_rarity in range(1,40):
+            common_card += 1
+            print("You got a common card!")
+            input(">  ")
+        elif card_rarity in range(41,70):
+            uncommon_card += 1
+            ("You got an uncommon card!")
+            input(">  ")
+        elif card_rarity in range(71,89):
+            rare_card += 1
+            ("You got a rare card!")
+            input(">  ")
+        elif card_rarity in range(90,96):
+            epic_card += 1
+            ("You got an epic card!")
+            input(">  ")
+        elif card_rarity in range(97,100):
+            legendary_card += 1
+            ("You got a LEGENDARY card!")
+            input(">  ")
+        else:
+            print("how did you do that")
+            
+        rnd_op += 1
+    
+    packs -= 1
+    input("")
+    game()
+
+def album():
+    global cards, packs
+    print(f"Total cards: {cards}")
+    
+    album_select = input("")
+    if album_select == "leave":
+        game()
+    else:
+        clr()
+        print("No valid option selected")
+        input("")
+        clr()
+        album()
+        
+def buy_pack():
+    global packs, money
+    clr()
+    packs += 1
+    money -= 10
+    print(Fore.GREEN + "You have bought 1 pack" + Fore.WHITE)
+    input(">  ")
+    game()
+
+def game():
+    global name, packs, money, cards
+    clr()
+    print("*------------------------*")
+    print(name)
+    print(f"Packs left: {packs}")
+    print(f"Total Cards: {cards}")
+    print(f"Money left: {money}$")
+    print("*------------------------*")
+    print("*      -Open Pack-       *")
+    print("*        -Album-         *")
+    print("*      -Buy Packs-       *")
+    print("*        -Leave-         *")
+    print("*------------------------*")
+    
+    game_select = input("")
+    
+    if game_select == "open pack" or game_select == "1":
+        clr()
+        open_pack()
+    elif game_select == "album" or game_select == "2":
+        clr()
+        album()
+    elif game_select in ("buy pack","3"):
+        buy_pack()
+    elif game_select in ("leave","4"):
+        end()
+    else:
+        print("No valid option selected")
+        input("")
+        clr()
+        game()
+    
+    
+start()
